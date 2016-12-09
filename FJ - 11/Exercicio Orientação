@@ -1,0 +1,86 @@
+import java.util.ArrayList;
+
+class Casa{
+	
+	private String cor;
+	ArrayList<Porta> portas = new ArrayList<Porta>();
+	private int quantidadePortasAbertas = 0;
+	
+	void pinta(String cor){
+		this.cor = cor;
+	}
+	
+	int quantasPortasEstaoAbertas(){
+		
+		for(Porta p : portas){
+			if(p.getPortaAberta()) quantidadePortasAbertas++;
+		}
+		
+		return quantidadePortasAbertas;
+	}
+	
+	void adicionaPorta(Porta p){
+		portas.add(p);
+	}
+	
+	int totalDePortas(){
+		return portas.size();
+	}
+	
+}
+
+class Porta{
+	
+	private String cor = "Vermelho";
+	private boolean aberta = false;
+	
+	void abrePorta(){
+		aberta = true;
+	}
+	
+	void fechaPorta(){
+		aberta = false;
+	}
+	
+	void pintaPorta(String cor){
+		this.cor = cor; 
+	}
+	
+	String retornaCor(){
+		return cor;
+	}
+	
+	boolean getPortaAberta(){
+		return aberta;
+	}
+	
+}
+
+class Main{
+	
+	public static void Main(String[] args){
+		Casa c = new Casa();
+		Porta p1 = new Porta();
+		Porta p2 = new Porta();
+		Porta p3 = new Porta();
+		
+		p1.pintaPorta("Verde");
+		p2.pintaPorta("Azul");
+		
+		p3.abrePorta();
+		p2.abrePorta();
+		p3.fechaPorta();
+		
+		c.portas.add(p1);
+		c.portas.add(p2);
+		c.portas.add(p3);
+		
+		System.out.println("Quantidade de portas abertas: " + c.quantasPortasEstaoAbertas());
+		System.out.println("Quantas portas têm na casa: " + c.totalDePortas());
+		for(Porta p : c.portas){
+			System.out.println("Cor da porta: " + p.retornaCor());
+		}
+	}
+}
+
+
