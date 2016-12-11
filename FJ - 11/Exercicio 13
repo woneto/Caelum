@@ -1,0 +1,151 @@
+public class ExercicioBanco{
+	
+	public static void main(String[] args){
+		Gerente gerente = new Gerente();
+		gerente.setNome("Waldir");
+		gerente.setCpf("95884375829");
+		gerente.setSalario(50000);
+	}
+}
+
+class Conta{
+	
+	int numero;
+	private Cliente titular;
+	private double saldo;
+	private double limite;
+	private static int totalDeContas = 0;
+	
+	public Conta(Cliente titular){
+		Conta.totalDeContas += 1;
+		this.titular = titular;
+	}
+	
+	public static int getTotalDeContas(){
+		return Conta.totalDeContas;
+	}
+	
+	public void saca(double quantidade){
+		
+		if(quantidade > saldo + limite){
+			System.out.println("Não é possível sacar fora do limite");
+		}
+		else{
+			this.saldo -= quantidade;
+		}
+		
+	}
+	
+	public double getSaldo(){
+		return this.saldo + this.limite;
+	}
+		
+	public Cliente getTitular(){
+		return this.titular;
+	}
+	
+	public void depositar(double quantidade){
+		if(quantidade >= 0)
+			saldo += quantidade;
+	}
+	
+}
+
+class Cliente{
+	
+	public Cliente(String cpf){
+		this.cpf = cpf;
+	}
+	
+	public Cliente(String cpf, String nome){
+		this(cpf);
+		this.nome = nome;
+	}
+	
+	public Cliente(String cpf, String nome, String endereco){
+		this(cpf, nome);
+		this.endereco = endereco;
+	}
+	
+	public Cliente(String cpf, String nome, String endereco, int idade){
+		this(cpf, nome, endereco);
+		this.idade = idade;
+	}
+	
+	private String nome;
+	private String cpf;
+	private String endereco;
+	private int idade;
+	
+	public void mudaCPF(String cpf){
+		validaCPF(cpf);
+		this.cpf = cpf;
+	}
+
+	private void validaCPF(String cpf) {
+		
+	}
+}
+
+
+class FuncionariosBanco{
+	protected String nome;
+	protected String cpf;
+	protected double salario;
+	
+	public FuncionariosBanco(){
+		
+	}
+	
+	public FuncionariosBanco(String nome){
+		this.nome = nome;
+	}
+	
+	public FuncionariosBanco(String nome, String cpf){
+		this(nome);
+		this.cpf = cpf;
+	}
+	
+	public FuncionariosBanco(String nome, String cpf, double salario){
+		this(nome, cpf);
+		this.salario = salario;
+	}
+	
+	public void setNome(String nome){
+		this.nome = nome;
+	}
+	
+	public void setCpf(String cpf){
+		this.cpf = cpf;
+	}
+	
+	public void setSalario(double salario){
+		this.salario = salario;
+	}
+	
+	public double getBonificacao(){
+		return this.salario * 0.1;
+	}
+}
+
+class Gerente extends FuncionariosBanco{
+	//private String nome;
+	//private String cpf;
+	//private double salario;
+	private int senha;
+	private int numeroDeFuncionariosGerenciados;
+	
+	public boolean autentica(int senha){
+		if(this.senha == senha) return true;
+		else return false;
+	}
+	
+	public void setSenha(int valor){
+		this.senha = valor;
+	}
+	
+	@Override
+	public double getBonificacao(){
+		return super.getBonificacao() + 1000;
+	}
+}
