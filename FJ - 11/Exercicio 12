@@ -1,0 +1,165 @@
+
+
+public class ExercicioFuncionarios{
+	
+	public static void main(String[] args) {
+		Empresa empresa = new Empresa(1);
+		Funcionario f1 = new Funcionario("Waldir", "TI", 50000, "15/07/1996", "95847229");
+		empresa.adicionaFuncionario(f1);
+	}
+}
+
+class Empresa{
+	
+	private Funcionario[] funcionarios;
+	
+	private int counter = 0;
+	
+	public Empresa(int quantidadeFuncionarios){
+		funcionarios = new Funcionario[quantidadeFuncionarios];
+	}
+	
+	public void adicionaFuncionario(Funcionario f){
+		funcionarios[counter] = f;
+		counter++;
+	}
+	
+	public Funcionario getFuncionario(int posicao){
+		return this.funcionarios[posicao];
+	}
+}
+
+
+class Funcionario {
+	
+	private static int identificador = 0;
+	private String nome = "";
+	private String departamento = "Indisponivel";
+	private double salario = 0;
+	private String dataEntrada;
+	private String rg = "000000000";
+	
+	private Data data;
+	
+	public Funcionario(){
+		identificador++;
+	}
+
+	public Funcionario(String nome){
+		this();
+		this.nome = nome;
+	}
+	
+	public Funcionario(String nome, String departamento){
+		this(nome);
+		this.nome = nome;
+		this.departamento = departamento;
+	}
+	
+	public static int getIdentificador(){
+		return identificador;
+	}
+	
+	public Funcionario(String nome, String departamento, double salario){
+		this(nome, departamento);
+		this.salario = salario;
+	}
+	
+	public Funcionario(String nome, String departamento, double salario, String dataEntrada){
+		this(nome, departamento, salario);
+		this.dataEntrada = dataEntrada;
+	}
+	
+	public Funcionario(String nome, String departamento, double salario, String dataEntrada, String rg){
+		this(nome, departamento, salario, dataEntrada);
+		this.rg = rg;
+	}
+	
+	public void setNome(String nome){
+		this.nome = nome;
+	}
+	
+	public void setSalario(double valor){
+		this.salario = valor;
+	}
+	
+	public void setDepartamento(String departamento){
+		this.departamento = departamento;
+	}
+	
+	public void setDataDeEntrada(String data){
+		this.dataEntrada = data;
+		this.data = new Data(dataEntrada);
+	}
+	
+	public void setRG(String rg){
+		this.rg = rg;
+	}
+	public void recebeAumento(double aumento){
+		if(aumento > 0) this.salario += aumento;
+	}
+	
+	public double calculaGanhoAnual(){
+		return this.salario * 12;
+	}
+	
+	public void mostra(){
+		System.out.println("Nome: " + this.nome);
+		System.out.println("Departamento: " + this.departamento);
+		System.out.println("Salário: " + this.salario);
+		System.out.println("Dia: " + this.data.getDia());
+		System.out.println("Mês: " + this.data.getMesExtenso());
+		System.out.println("Ano: " + this.data.getAno());
+		System.out.println("Identificador: " + Funcionario.getIdentificador());
+	}
+	
+}
+
+class Data{
+	
+	private String dia;
+	private int mes;
+	private String ano;
+	private String data;
+	
+	private enum mesesExtenso{
+		Janeiro, Fevereiro, Março, Abril, Maio, Junho, Julho, Agosto, Setembro, Outubro, Novembro, Dezembro;
+	}
+	
+	private enum mesesAbreviados{
+		Jan, Fev, Mar, Abr, Mai, Jun, Jul, Ago, Set, Out, Nov, Dez;
+	}
+	
+	public Data(String data){
+		this.data = data;
+		CalculaData(data);
+	}
+	
+	private void CalculaData(String data){
+		this.dia = data.substring(0, data.indexOf("/"));
+		data = data.substring(data.indexOf("/") + 1, data.length());
+		this.mes = Integer.parseInt(data.substring(0, data.indexOf("/")));
+		data = data.substring(data.indexOf("/") + 1, data.length());
+		this.ano = data.substring(0, data.length());
+	}
+	
+	public String getDia(){
+		return dia;
+	}
+	
+	public int getMes(){
+		return mes;
+	}
+	
+	public String getAno(){
+		return ano;
+	}
+	
+	public String getMesExtenso(){
+		return mesesExtenso.values()[mes - 1].toString();
+	}
+	
+	public String getMesAbreviado(){
+		return mesesAbreviados.values()[mes - 1].toString();
+	}
+}
