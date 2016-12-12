@@ -25,7 +25,7 @@ class Conta{
 class ContaCorrente extends Conta{
 	
 	public void atualiza(double taxa){
-		this.saldo += this.saldo * taxa * 2;
+		super.atualiza(taxa * 2);
 	}
 	
 	public void depositar(double valor){
@@ -39,7 +39,7 @@ class ContaCorrente extends Conta{
 class ContaPoupanca extends Conta{
 	
 	public void atualiza(double taxa){
-		this.saldo += this.saldo * taxa * 3;
+		super.atualiza(taxa * 3);
 	}
 	
 }
@@ -50,17 +50,64 @@ public class Main{
 		Conta c = new Conta();
 		ContaCorrente cc = new ContaCorrente();
 		ContaPoupanca cp = new ContaPoupanca();
+		Banco b = new Banco();
 		
 		c.depositar(1000);
 		cc.depositar(1000);
 		cp.depositar(1000);
 		
-		c.atualiza(0.1);
-		cc.atualiza(0.1);
-		cp.atualiza(0.1);
+		b.adiciona(c);		
+		b.adiciona(cc);
+		b.adiciona(cp);
 		
-		System.out.println(c.getSaldo());
-		System.out.println(cc.getSaldo());
-		System.out.println(cp.getSaldo());
+		AtualizadorDeContas adc = new AtualizadorDeContas(0.01);
+		
+		int index = b.pegaTotalDeContas();
+		
+		for(int i = 0; i < index; i++){
+			if(b.pegaConta(i) != null)
+				adc.roda(b.pegaConta(i));
+		}
+		
+		System.out.println("Saldo total: " + adc.getSaldoTotal());
 	}
+}
+
+class AtualizadorDeContas{
+	private double saldoTotal = 0;
+	private double selic;
+	
+	public AtualizadorDeContas(double selic){
+		this.selic = selic;
+	}
+	
+	public void roda(Conta c){
+		System.out.println("Saldo anterior: " + c.getSaldo());
+		c.atualiza(0.1);
+		System.out.println("Saldo final: " + c.getSaldo());
+		this.saldoTotal += c.getSaldo();
+	}
+	
+	public double getSaldoTotal(){
+		return this.saldoTotal;
+	}
+}
+
+class Banco{
+	private Conta[] contas = new Conta[5];
+	private int index = 0;
+	
+	public void adiciona(Conta c){
+		this.contas[index] = c;
+		this.index++;
+	}
+	
+	public Conta pegaConta(int x){
+		return this.contas[x];
+	}
+	
+	public int pegaTotalDeContas(){
+		return this.contas.length;
+	}
+	
 }
