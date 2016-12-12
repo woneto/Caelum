@@ -1,0 +1,66 @@
+class Conta{
+	protected double saldo;
+	
+	public double getSaldo(){
+		return this.saldo;
+	}
+	
+	public void depositar(double valor){
+		if(valor > 0){
+			this.saldo += valor;
+		}
+	}
+	
+	public void sacar(double valor){
+		if(valor > 0){
+			saldo -= valor;
+		}
+	}
+	
+	public void atualiza(double taxa){
+		this.saldo += this.saldo * taxa;
+	}
+}
+
+class ContaCorrente extends Conta{
+	
+	public void atualiza(double taxa){
+		this.saldo += this.saldo * taxa * 2;
+	}
+	
+	public void depositar(double valor){
+		if(valor > 0){
+			valor -= 0.1;
+			this.saldo += valor;
+		}
+	}
+}
+
+class ContaPoupanca extends Conta{
+	
+	public void atualiza(double taxa){
+		this.saldo += this.saldo * taxa * 3;
+	}
+	
+}
+
+public class Main{
+
+	public static void main(String[] args){
+		Conta c = new Conta();
+		ContaCorrente cc = new ContaCorrente();
+		ContaPoupanca cp = new ContaPoupanca();
+		
+		c.depositar(1000);
+		cc.depositar(1000);
+		cp.depositar(1000);
+		
+		c.atualiza(0.1);
+		cc.atualiza(0.1);
+		cp.atualiza(0.1);
+		
+		System.out.println(c.getSaldo());
+		System.out.println(cc.getSaldo());
+		System.out.println(cp.getSaldo());
+	}
+}
